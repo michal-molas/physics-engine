@@ -19,16 +19,19 @@ class User:
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
-                        self.start_pos = pygame.mouse.get_pos()
-                        self.lm_pressed = True
+                        m_pos = pygame.mouse.get_pos()
+                        if m_pos[0] > TB_WIDTH:
+                            self.start_pos = m_pos
+                            self.lm_pressed = True
                 if event.type == pygame.MOUSEBUTTONUP:
                     if event.button == 1:
-                        self.end_pos = pygame.mouse.get_pos()
-                        self.lm_pressed = False
-                        if self.sel_shape == "Rect":
-                            return Rect(self.start_pos, self.end_pos, self.sel_color)
-                        elif self.sel_shape == "Circle":
-                            return Circle(self.start_pos, self.end_pos, self.sel_color)
+                        if self.lm_pressed:
+                            self.end_pos = pygame.mouse.get_pos()
+                            self.lm_pressed = False
+                            if self.sel_shape == "Rect":
+                                return Rect(self.start_pos, self.end_pos, self.sel_color)
+                            elif self.sel_shape == "Circle":
+                                return Circle(self.start_pos, self.end_pos, self.sel_color)
             if self.lm_pressed:
                 if self.sel_shape == "Rect":
                     Rect(self.start_pos, pygame.mouse.get_pos(), self.sel_color).draw(window)
@@ -49,6 +52,8 @@ class User:
         s = self.draw_shape(events, window)
         if s is not None:
             shapes.append(s)
+            self.stert_pos = None
+            self.end_pos = None
             
                 
                 
