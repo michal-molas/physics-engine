@@ -23,8 +23,6 @@ class Shape:
     def update(self, shapes):
         self.move()
         self.change_vel()
-        self.check_collisions(shapes)
-        self.collide_floor()
         self.update_pts()
 
         

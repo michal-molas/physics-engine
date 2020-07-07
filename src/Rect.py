@@ -23,7 +23,7 @@ class Rect(Shape):
     def collide(self, shape):
         self.vel *= -1
     
-    def collide_floor(self):
+    def collide_walls(self):
         if self.rel_pos[1] >= S_HEIGHT - FLOOR_H - self.h/2:
             self.vel *= -1
             self.rel_pos[1] = S_HEIGHT - FLOOR_H - self.h/2

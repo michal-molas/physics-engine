@@ -2,7 +2,7 @@ import pygame
 from settings import *
 from User import User
 from Floor import Floor
-from Rect import Rect
+import Collisions as col
 
 pygame.init()
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
@@ -19,6 +19,7 @@ def update(events):
         s.update(shapes)
 
     user.update(events, window, shapes)
+    col.perform_collisions(shapes)
 
 def draw_shapes():
     window.fill(WHITE)
