@@ -16,11 +16,9 @@ YELLOW = (0, 255, 255)
 BROWN = (139,69,19)
 
 G = 9.8
-DT = 0.2
+DT = 0.15
+DENS = 1000.0
 
-LEFT = np.array([-1,0])
-RIGHT = np.array([1,0])
-DOWN = np.array([0,1])
-UP = np.array([0,-1])
+FPS = 60
 
 

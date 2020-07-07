@@ -29,14 +29,14 @@ class User:
                             self.end_pos = pygame.mouse.get_pos()
                             self.lm_pressed = False
                             if self.sel_shape == "Rect":
-                                return Rect(self.start_pos, self.end_pos, self.sel_color)
+                                return Rect(self.start_pos, self.end_pos, self.sel_color, self.sel_shape)
                             elif self.sel_shape == "Circle":
-                                return Circle(self.start_pos, self.end_pos, self.sel_color)
+                                return Circle(self.start_pos, self.end_pos, self.sel_color, self.sel_shape)
             if self.lm_pressed:
                 if self.sel_shape == "Rect":
-                    Rect(self.start_pos, pygame.mouse.get_pos(), self.sel_color).draw(window)
+                    Rect(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape).draw(window)
                 elif self.sel_shape == "Circle":
-                    Circle(self.start_pos, pygame.mouse.get_pos(), self.sel_color).draw(window)
+                    Circle(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape).draw(window)
         return None
 
     def change_shape(self, events):
