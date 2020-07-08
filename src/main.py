@@ -5,30 +5,34 @@ from Floor import Floor
 import Collisions as col
 
 pygame.init()
-window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
+
+sett = Settings()
+
+window = pygame.display.set_mode((sett.S_WIDTH, sett.S_HEIGHT))
 pygame.display.set_caption("Physics Engine")
 
 clock = pygame.time.Clock()
 
 shapes = []
-user = User()
+user = User(sett)
 floor = Floor()
 
 def update(events):
     for s in shapes:
-        s.update(shapes)
+        s.update(shapes, sett)
 
-    user.update(events, window, shapes)
-    col.perform_collisions(shapes)
+    user.update(events, window, shapes, sett)
+    col.perform_collisions(shapes, sett)
 
 def draw_shapes():
-    window.fill(WHITE)
+    window.fill(sett.WHITE)
     for s in shapes:
         s.draw(window)
 
-def draw_other():
-    pygame.draw.rect(window, BLACK, (0, 0, TB_WIDTH, S_HEIGHT))
-    floor.draw(window)
+def draw_other(events):
+    pygame.draw.rect(window, sett.BLACK, (0, 0, sett.TB_WIDTH, sett.S_HEIGHT))
+    floor.draw(window, sett)
+    sett.update_box(events, window)
     
 
 is_running = True
@@ -40,10 +44,10 @@ while is_running:
             
     draw_shapes()
     update(events)
-    draw_other()
+    draw_other(events)
     
     pygame.display.update()
 
-    clock.tick(FPS)
+    clock.tick(sett.FPS)
     
 pygame.quit()

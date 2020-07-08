@@ -1,26 +1,25 @@
 import pygame
 from Rect import Rect
-from settings import *
 from Circle import Circle
 
 class User:
-    def __init__(self):
+    def __init__(self, sett):
         self.lm_pressed = False
         self.rm_pressed = False
 
         self.sel_shape = "Rect"
-        self.sel_color = RED
+        self.sel_color = sett.RED
         
         self.start_pos = None
         self.end_pos = None
 
-    def draw_shape(self, events, window):
+    def draw_shape(self, events, window, sett):
         if not self.rm_pressed:
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1:
                         m_pos = pygame.mouse.get_pos()
-                        if m_pos[0] > TB_WIDTH:
+                        if m_pos[0] > sett.TB_WIDTH:
                             self.start_pos = m_pos
                             self.lm_pressed = True
                 if event.type == pygame.MOUSEBUTTONUP:
@@ -29,14 +28,14 @@ class User:
                             self.end_pos = pygame.mouse.get_pos()
                             self.lm_pressed = False
                             if self.sel_shape == "Rect":
-                                return Rect(self.start_pos, self.end_pos, self.sel_color, self.sel_shape)
+                                return Rect(self.start_pos, self.end_pos, self.sel_color, self.sel_shape, sett)
                             elif self.sel_shape == "Circle":
-                                return Circle(self.start_pos, self.end_pos, self.sel_color, self.sel_shape)
+                                return Circle(self.start_pos, self.end_pos, self.sel_color, self.sel_shape, sett)
             if self.lm_pressed:
                 if self.sel_shape == "Rect":
-                    Rect(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape).draw(window)
+                    Rect(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape, sett).draw(window)
                 elif self.sel_shape == "Circle":
-                    Circle(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape).draw(window)
+                    Circle(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape, sett).draw(window)
         return None
 
     def change_shape(self, events):
@@ -47,9 +46,9 @@ class User:
                 if event.key == pygame.K_2:
                     self.sel_shape = "Circle"
 
-    def update(self, events, window, shapes):
+    def update(self, events, window, shapes, sett):
         self.change_shape(events)
-        s = self.draw_shape(events, window)
+        s = self.draw_shape(events, window, sett)
         if s is not None:
             shapes.append(s)
             self.stert_pos = None
