@@ -10,8 +10,6 @@ class Line:
         self.P1 = [P1[0], P1[1]]
         self.P2 = [P2[0], P2[1]]
 
-        print(self.A, self.B, self.C)
-
         #self.slope = (P2[1]-P1[1])/(P2[0]-P1[0]) if P1[0] != P2[0] else None
 
     def dist(self, P):

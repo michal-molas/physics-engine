@@ -42,7 +42,6 @@ class Circle(Shape):
             if (P2[1]-P4[1]) * c24 <= 0:
                 return
         if d <= self.r:
-            print("|ll")
             t = P2-P1
             ut = t/np.linalg.norm(t)
             un = np.array([-ut[1], ut[0]])
@@ -59,6 +58,28 @@ class Circle(Shape):
             vt_p = vt_sp*ut
 
             self.vel = vn_p + vt_p
+
+    def ccorners_collide(self, w):
+        corners = [w.A, w.B, w.C, w.D]
+        for corn in corners:
+            n = self.S - corn
+            n_m = np.linalg.norm(n)
+            if n_m <= self.r:
+                un = n/n_m
+                ut = np.array([-un[1], un[0]])
+
+                self.rel_pos += un*n_m
+
+                vn_s = np.dot(un, self.vel)
+                vt_s = np.dot(ut, self.vel)
+
+                vn_sp = -vn_s
+                vt_sp = vt_s
+
+                vn_p = vn_sp*un
+                vt_p = vt_sp*ut
+
+                self.vel = vn_p + vt_p
 
     def collide_walls(self, walls, sett):
         if self.rel_pos[1] >= sett.S_HEIGHT - sett.FLOOR_H - self.r:
@@ -83,11 +104,7 @@ class Circle(Shape):
             self.cw_collide(w.C, w.D, w.B, w.A, w.lineCD, w.lineBC, w.lineDA) 
             ##DA
             self.cw_collide(w.D, w.A, w.C, w.B, w.lineDA, w.lineCD, w.lineAB)
-            #print(w.lineAB.compare(self.S))
-            #print(w.lineBC.compare(self.S))
-            #print(w.lineCD.compare(self.S))
-            #print(w.lineDA.compare(self.S))
-            #print()
+            self.ccorners_collide(w)
         
     def draw(self, window):
         pygame.draw.circle(window, self.color, [int(self.S[0]), int(self.S[1])], int(self.r))
