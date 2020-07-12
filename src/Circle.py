@@ -68,7 +68,7 @@ class Circle(Shape):
                 un = n/n_m
                 ut = np.array([-un[1], un[0]])
 
-                self.rel_pos += un*n_m
+                self.rel_pos += un*(self.r-n_m)
 
                 vn_s = np.dot(un, self.vel)
                 vt_s = np.dot(ut, self.vel)

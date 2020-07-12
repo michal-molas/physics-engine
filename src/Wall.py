@@ -54,5 +54,5 @@ class Wall:
     def draw(self, window):
         pts = [[int(self.A[0]), int(self.A[1])], [int(self.B[0]), int(self.B[1])], [int(self.C[0]), int(self.C[1])], [int(self.D[0]), int(self.D[1])]]
         pygame.draw.polygon(window, self.color, pts)
-        self.draw_collider(window)
+        #self.draw_collider(window)
         
