@@ -1,9 +1,10 @@
 import numpy as np
 import math
 
-def collide_walls(shapes, sett):
+def collide_walls(shapes, walls, sett):
     for s in shapes:
-        s.collide_walls(sett)
+        if s.t == "Circle":
+            s.collide_walls(walls, sett)
 
 def collide_shapes(shapes, sett):
     for i in range(len(shapes)-1):
@@ -24,7 +25,7 @@ def cc_collide(s1, s2, sett):
     m1 = sett.DENS*math.pi*pow(s1.r, 2)
     m2 = sett.DENS*math.pi*pow(s2.r, 2)
         
-    n = np.array([s2.S[0]-s1.S[0], s2.S[1]-s1.S[1]])
+    n = s1.S-s2.S
     un = n/np.linalg.norm(n)
     ut = np.array([-un[1], un[0]])
         
@@ -49,7 +50,7 @@ def cc_collide(s1, s2, sett):
     s1.vel = v1_p
     s2.vel = v2_p
 
-def perform_collisions(shapes, sett):
-    collide_walls(shapes, sett)
+def perform_collisions(shapes, walls, sett):
+    collide_walls(shapes, walls, sett)
     collide_shapes(shapes, sett)
     

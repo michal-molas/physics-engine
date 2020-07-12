@@ -33,7 +33,7 @@ class Shape:
         self.rel_pos[0] += self.vel[0]*sett.DT + self.acc[0]*sett.DT*sett.DT/2
         self.rel_pos[1] += self.vel[1]*sett.DT + self.acc[1]*sett.DT*sett.DT/2
 
-    def update(self, shapes, sett):
+    def update(self, events, shapes, sett):
         self.F_res = self.F_g + self.F_e
         self.acc = self.F_res/self.m
 
@@ -41,6 +41,7 @@ class Shape:
         self.move(sett)
         self.change_vel(sett)
         self.update_pts()
+        
 
         
         

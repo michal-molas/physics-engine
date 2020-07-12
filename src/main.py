@@ -14,26 +14,32 @@ pygame.display.set_caption("Physics Engine")
 clock = pygame.time.Clock()
 
 shapes = []
+walls = []
 user = User(sett)
 floor = Floor()
 
 def update(events):
     for s in shapes:
-        s.update(shapes, sett)
+        s.update(events, shapes, sett)
 
-    user.update(events, window, shapes, sett)
-    col.perform_collisions(shapes, sett)
+    for w in walls:
+        pass
+            
+    user.update(events, window, shapes, walls, sett)
+    col.perform_collisions(shapes, walls, sett)
 
 def draw_shapes():
     window.fill(sett.WHITE)
     for s in shapes:
         s.draw(window)
 
+    for w in walls:
+        w.draw(window)
+
 def draw_other(events):
     pygame.draw.rect(window, sett.BLACK, (0, 0, sett.TB_WIDTH, sett.S_HEIGHT))
     floor.draw(window, sett)
-    sett.update_box(events, window)
-    
+    sett.update(events, window, user) 
 
 is_running = True
 while is_running:
