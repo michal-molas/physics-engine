@@ -3,7 +3,8 @@ import numpy as np
 import math
 
 from Circle import Circle
-from Wall import Wall
+from Rect_Wall import Rect_Wall
+from Triangle_Wall import Triangle_Wall
 
 class User:
     def __init__(self, sett):
@@ -34,17 +35,21 @@ class User:
                             self.lm_pressed = False
                             if self.sel_shape == "Circle":
                                 return Circle(self.start_pos, self.end_pos, self.sel_color, self.sel_shape, sett)
-                            elif self.sel_shape == "Wall":
-                                return Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
+                            elif self.sel_shape == "Rect_Wall":
+                                return Rect_Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
+                            elif self.sel_shape == "Triangle_Wall":
+                                return Triangle_Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
             if self.lm_pressed:
                 if self.sel_shape == "Circle":
                     Circle(self.start_pos, pygame.mouse.get_pos(), self.sel_color, self.sel_shape, sett).draw(window)
-                elif self.sel_shape == "Wall":
-                    Wall(self.start_pos, pygame.mouse.get_pos(), self.angle, self.sel_color, self.sel_shape).draw(window)
+                elif self.sel_shape == "Rect_Wall":
+                    Rect_Wall(self.start_pos, pygame.mouse.get_pos(), self.angle, self.sel_color, self.sel_shape).draw(window)
+                elif self.sel_shape == "Triangle_Wall":
+                    Triangle_Wall(self.start_pos, pygame.mouse.get_pos(), self.angle, self.sel_color, self.sel_shape).draw(window)
         return None
 
     def rotate_wall(self, events):
-        if self.lm_pressed and self.sel_shape == "Wall":
+        if self.lm_pressed and self.sel_shape[-5:] == "_Wall":
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 4:
@@ -58,7 +63,9 @@ class User:
                 if event.key == pygame.K_1:
                     self.sel_shape = "Circle"
                 if event.key == pygame.K_2:
-                    self.sel_shape = "Wall"
+                    self.sel_shape = "Rect_Wall"
+                if event.key == pygame.K_3:
+                    self.sel_shape = "Triangle_Wall"
 
     def update(self, events, window, shapes, walls, sett):
         self.change_shape(events)
@@ -69,7 +76,7 @@ class User:
                 shapes.append(s)
                 self.stert_pos = None
                 self.end_pos = None
-            elif s.t == "Wall":
+            elif s.t[-5:] == "_Wall":
                 self.angle = 0.0
                 walls.append(s)
                 self.stert_pos = None

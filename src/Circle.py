@@ -15,54 +15,9 @@ class Circle(Shape):
 
     def update_pts(self):
         self.S = self.rel_pos
-    '''
-    def cw_collide(self, P1, P2, P3, P4, line12, line13, line24):
-        d = line12.dist(self.S)
-        c12 = line12.compare(self.S)
-        if P1[0] != P2[0]:
-            if (P1[0]-P2[0]) * c12 <= 0:
-                return
-        else:
-            if (P1[1]-P2[1]) * c12 >= 0:
-                return
-
-        c13 = line13.compare(self.S)
-        if P1[0] != P3[0]:
-            if (P1[0]-P3[0]) * c13 <= 0:
-                return
-        else:
-            if (P1[1]-P3[1]) * c13 >= 0:
-                return
-
-        c24 = line24.compare(self.S)
-        if P2[0] != P4[0]:
-            if (P2[0]-P4[0]) * c24 >= 0:
-                return
-        else:
-            if (P2[1]-P4[1]) * c24 <= 0:
-                return
-        if d <= self.r:
-            t = P2-P1
-            ut = t/np.linalg.norm(t)
-            un = np.array([-ut[1], ut[0]])
-
-            self.rel_pos -= un*(self.r-d)
-
-            vn_s = np.dot(un, self.vel)
-            vt_s = np.dot(ut, self.vel)
-
-            vn_sp = -vn_s
-            vt_sp = vt_s
-
-            vn_p = vn_sp*un
-            vt_p = vt_sp*ut
-
-            self.vel = vn_p + vt_p
-    '''
 
     def corners_collide(self, w):
-        corners = [w.A, w.B, w.C, w.D]
-        for corn in corners:
+        for corn in w.pts:
             n = self.S - corn
             n_m = np.linalg.norm(n)
             if n_m <= self.r:

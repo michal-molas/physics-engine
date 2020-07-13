@@ -5,59 +5,37 @@ import math
 from Line import Line
 
 class Wall:
-    def __init__(self, P1, P2, angle, color, t):
+    def __init__(self, P1, P2, pts, angle, color, t):
         self.color = color
         self.t = t
 
+        self.P_s = np.array([P1[0], P1[1]])
+        self.P_e = np.array([P2[0], P2[1]])
+
         self.angle = angle
-        self.A = np.array([P1[0], P1[1]])
-        self.C = np.array([P2[0], P2[1]])
-        if P1[0] < P2[0]:
-            if P1[1] < P2[1]:
-                self.B = np.array([P2[0], P1[1]])
-                self.D = np.array([P1[0], P2[1]])
-            else:
-                self.B = np.array([P1[0], P2[1]])
-                self.D = np.array([P2[0], P1[1]])
-        else:
-            if P1[1] < P2[1]:
-                self.B = np.array([P1[0], P2[1]])
-                self.D = np.array([P2[0], P1[1]])
-            else:
-                self.B = np.array([P2[0], P1[1]])
-                self.D = np.array([P1[0], P2[1]])
+        self.pts = pts
 
         self.rot_pts()
         
-        self.lineAB = Line(self.A, self.B)
-        self.lineBC = Line(self.B, self.C)
-        self.lineCD = Line(self.C, self.D)
-        self.lineDA = Line(self.D, self.A)
-
-        self.w = np.linalg.norm(self.A-self.B)
-        self.h = np.linalg.norm(self.B-self.C)
-
-        self.S = np.array([(P1[0]+P2[0])/2, (P1[1]+P2[1])/2])
+        self.lines = []
+        for i in range(len(pts)):
+            self.lines.append(Line(self.pts[i], self.pts[(i+1)%len(self.pts)]))
     
     def rot_pts(self):
         rot_mat = [[math.cos(self.angle), -math.sin(self.angle)],[math.sin(self.angle), math.cos(self.angle)]]
-        self.A = np.dot(rot_mat, self.A-self.C)+self.C
-        self.B = np.dot(rot_mat, self.B-self.C)+self.C
-        self.D = np.dot(rot_mat, self.D-self.C)+self.C
+        for i in range(len(self.pts)):
+            self.pts[i] = np.dot(rot_mat, self.pts[i]-self.P_e)+self.P_e
 
     def draw_collider(self, window):
-        self.lineAB.draw(window, (0,0,255))
-        self.lineBC.draw(window, (0,255,0))
-        self.lineCD.draw(window, (255, 255, 0))
-        self.lineDA.draw(window, (0, 255, 255))
+        for line in self.lines:
+            line.draw(window, (0,0,255))
 
     def collide_circle(self, c):
-        lines = [self.lineAB, self.lineBC, self.lineCD, self.lineDA]
-        for i in range(4):
-            lines[i].collide_circle(c)
+        for line in self.lines:
+            line.collide_circle(c)
 
     def draw(self, window):
-        pts = [[int(self.A[0]), int(self.A[1])], [int(self.B[0]), int(self.B[1])], [int(self.C[0]), int(self.C[1])], [int(self.D[0]), int(self.D[1])]]
-        pygame.draw.polygon(window, self.color, pts)
+        pts_draw = [[int(x[0]), int(x[1])] for x in self.pts]
+        pygame.draw.polygon(window, self.color, pts_draw)
         #self.draw_collider(window)
         
