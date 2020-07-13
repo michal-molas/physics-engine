@@ -46,10 +46,15 @@ class Wall:
         self.D = np.dot(rot_mat, self.D-self.C)+self.C
 
     def draw_collider(self, window):
-        self.lineAB.draw(window)
-        self.lineBC.draw(window)
-        self.lineCD.draw(window)
-        self.lineDA.draw(window)
+        self.lineAB.draw(window, (0,0,255))
+        self.lineBC.draw(window, (0,255,0))
+        self.lineCD.draw(window, (255, 255, 0))
+        self.lineDA.draw(window, (0, 255, 255))
+
+    def collide_circle(self, c):
+        lines = [self.lineAB, self.lineBC, self.lineCD, self.lineDA]
+        for i in range(4):
+            lines[i].collide_circle(c)
 
     def draw(self, window):
         pts = [[int(self.A[0]), int(self.A[1])], [int(self.B[0]), int(self.B[1])], [int(self.C[0]), int(self.C[1])], [int(self.D[0]), int(self.D[1])]]

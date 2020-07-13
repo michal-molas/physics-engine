@@ -36,11 +36,12 @@ class Shape:
     def update(self, events, shapes, sett):
         self.F_res = self.F_g + self.F_e
         self.acc = self.F_res/self.m
-
+        
         self.update_forces(sett)
         self.move(sett)
         self.change_vel(sett)
         self.update_pts()
+        
         
 
         

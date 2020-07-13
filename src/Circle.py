@@ -15,7 +15,7 @@ class Circle(Shape):
 
     def update_pts(self):
         self.S = self.rel_pos
-
+    '''
     def cw_collide(self, P1, P2, P3, P4, line12, line13, line24):
         d = line12.dist(self.S)
         c12 = line12.compare(self.S)
@@ -58,8 +58,9 @@ class Circle(Shape):
             vt_p = vt_sp*ut
 
             self.vel = vn_p + vt_p
+    '''
 
-    def ccorners_collide(self, w):
+    def corners_collide(self, w):
         corners = [w.A, w.B, w.C, w.D]
         for corn in corners:
             n = self.S - corn
@@ -95,16 +96,9 @@ class Circle(Shape):
             self.vel[0] *= -1
             self.rel_pos[0] = sett.S_WIDTH - self.r
         
-        for w in walls:        
-            ##AB
-            self.cw_collide(w.A, w.B, w.D, w.C, w.lineAB, w.lineDA, w.lineBC)
-            ##BC
-            self.cw_collide(w.B, w.C, w.A, w.D, w.lineBC, w.lineAB, w.lineCD)  
-            ##CD
-            self.cw_collide(w.C, w.D, w.B, w.A, w.lineCD, w.lineBC, w.lineDA) 
-            ##DA
-            self.cw_collide(w.D, w.A, w.C, w.B, w.lineDA, w.lineCD, w.lineAB)
-            self.ccorners_collide(w)
+        for w in walls:
+            w.collide_circle(self)       
+            self.corners_collide(w)
         
     def draw(self, window):
         pygame.draw.circle(window, self.color, [int(self.S[0]), int(self.S[1])], int(self.r))
