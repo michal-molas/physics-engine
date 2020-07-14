@@ -18,7 +18,7 @@ class Line:
         #1 - above/right
         #-1 - below/left
         #0 - at
-        #(reversed y coordinate!)
+        #(reversed2 y coordinate!)
         if self.B != 0:
             f = (-self.A*P[0]-self.C)/self.B
             return np.sign(P[1]-f)

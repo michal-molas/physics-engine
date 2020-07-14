@@ -34,7 +34,7 @@ def draw_shapes():
         s.draw(window)
 
     for w in walls:
-        w.draw(window)
+        w.draw(window, sett)
 
 def draw_other(events):
     pygame.draw.rect(window, sett.BLACK, (0, 0, sett.TB_WIDTH, sett.S_HEIGHT))
