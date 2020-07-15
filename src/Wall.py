@@ -5,14 +5,11 @@ import math
 from Line import Line
 
 class Wall:
-    def __init__(self, P1, P2, pts, angle, color, t):
+    def __init__(self, pts, angle, color, t):
         self.color = color
         self.t = t
 
         self.selected = False
-
-        self.P_s = np.array([P1[0], P1[1]])
-        self.P_e = np.array([P2[0], P2[1]])
 
         self.angle = angle
         self.pts = pts
@@ -31,8 +28,8 @@ class Wall:
             c_x /= (A*6)
             c_y /= (A*6)
         else:
-            c_x = P1[0]
-            c_y = P1[1]
+            c_x = pts[0][0]
+            c_y = pts[0][1]
 
         self.centroid = np.array([c_x, c_y])
 

@@ -41,9 +41,15 @@ class Settings:
         self.blue_box = pygame.Rect(50, 10, 20, 20)
 
         #shape_buttons
+        self.mouse_box = pygame.Rect(10, 55, 20, 20)
+        self.circle_box = pygame.Rect(30, 55, 20, 20)
+        self.rect_wall_box = pygame.Rect(50, 55, 20, 20)
+        self.triangle_wall_box = pygame.Rect(70, 55, 20, 20)
+        self.polygon_wall_box = pygame.Rect(90, 55, 20, 20)
 
     def update(self, events, window, user):
         self.update_color_buttons(events, window, user)
+        self.update_shape_buttons(events, window, user)
         self.update_box_G(events, window)
 
     def update_color_buttons(self, events, window, user):
@@ -58,6 +64,35 @@ class Settings:
         pygame.draw.rect(window, self.RED, self.red_box)
         pygame.draw.rect(window, self.GREEN, self.green_box)
         pygame.draw.rect(window, self.BLUE, self.blue_box)
+
+    def update_shape_buttons(self, events, window, user):
+        for event in events:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if self.mouse_box.collidepoint(event.pos):
+                    user.sel_shape = "Mouse"
+                elif self.circle_box.collidepoint(event.pos):
+                    user.sel_shape = "Circle"
+                elif self.rect_wall_box.collidepoint(event.pos):
+                    user.sel_shape = "Rect_Wall"
+                elif self.triangle_wall_box.collidepoint(event.pos):
+                    user.sel_shape = "Triangle_Wall"
+                elif self.polygon_wall_box.collidepoint(event.pos):
+                    user.sel_shape = "Polygon_Wall"
+        pygame.draw.rect(window, self.WHITE, self.mouse_box, 2)
+        pygame.draw.polygon(window, self.WHITE, [[17, 68], [24, 64], [17, 58]])
+        pygame.draw.line(window, self.WHITE, [20, 65], [22, 70], 2)
+
+        pygame.draw.rect(window, self.WHITE, self.circle_box, 2)
+        pygame.draw.circle(window, self.WHITE, [40, 65], 7, 1)
+        
+        pygame.draw.rect(window, self.WHITE, self.rect_wall_box, 2)
+        pygame.draw.rect(window, self.WHITE, [54, 59, 12, 12], 2)
+        
+        pygame.draw.rect(window, self.WHITE, self.triangle_wall_box, 2)
+        pygame.draw.polygon(window, self.WHITE, [[74, 70], [86, 70], [80, 58]], 2)
+        
+        pygame.draw.rect(window, self.WHITE, self.polygon_wall_box, 2)
+        pygame.draw.polygon(window, self.WHITE, [[96, 71], [104, 71], [107, 65], [100, 57], [93, 64]], 2)
         
     def update_box_G(self, events, window):
         for event in events:

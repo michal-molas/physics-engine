@@ -11,4 +11,4 @@ class Triangle_Wall(Wall):
         B = A + vec + np.array([vec[1], -vec[0]])/math.sqrt(3)
         C = A + vec + np.array([-vec[1], vec[0]])/math.sqrt(3)
         pts = [A, B, C] 
-        super().__init__(P1, P2, pts, angle, color, t)
+        super().__init__(pts, angle, color, t)

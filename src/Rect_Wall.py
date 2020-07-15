@@ -23,4 +23,4 @@ class Rect_Wall(Wall):
                 B = np.array([P2[0], P1[1]])
                 D = np.array([P1[0], P2[1]])
         pts = [A, B, C, D] 
-        super().__init__(P1, P2, pts, angle, color, t)
+        super().__init__(pts, angle, color, t)
