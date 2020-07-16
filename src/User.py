@@ -14,7 +14,6 @@ class User:
         self.lm_pressed = False
 
         self.holding = False
-        self.hold_shape = None
         
         self.poly_drawing = False
         self.poly_pts = []
@@ -42,8 +41,14 @@ class User:
                             self.end_pos = pygame.mouse.get_pos()
                             self.lm_pressed = False
                             if self.end_pos is not None and self.start_pos is not None:
-                                if abs(self.end_pos[1]-self.start_pos[1])>10 and abs(self.end_pos[0]-self.start_pos[0])>10:
+                                vec = np.array([self.end_pos[0], self.end_pos[1]])-np.array([self.start_pos[0], self.start_pos[1]])
+                                r = np.linalg.norm(vec)
+                                if r > 5:
                                     if self.sel_shape == "Circle":
+                                        if r < sett.MIN_SIZE:
+                                            self.end_pos += vec/r*(sett.MIN_SIZE-r)
+                                        if r > sett.MAX_SIZE:
+                                            self.end_pos -= vec/r*(r-sett.MAX_SIZE)
                                         return Circle(self.start_pos, self.end_pos, self.sel_color, self.sel_shape, sett)
                                     elif self.sel_shape == "Rect_Wall":
                                         return Rect_Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
@@ -167,6 +172,8 @@ class User:
         self.angle = 0.0
         self.start_pos = None
         self.end_pos = None
+        self.lm_pressed = False
+        self.holding = False
     
     def change_shape(self, events):
         for event in events:

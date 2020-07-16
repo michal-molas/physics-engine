@@ -24,6 +24,9 @@ class Settings:
         self.DT = 0.2
         self.DENS = 1000.0
 
+        self.MIN_SIZE = 40
+        self.MAX_SIZE = 100
+
         self.FPS = 60
 
         #input_box_G
