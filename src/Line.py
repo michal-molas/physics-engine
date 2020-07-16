@@ -11,6 +11,8 @@ class Line:
         self.P1 = P1 #[P1[0], P1[1]]
         self.P2 = P2 #[P2[0], P2[1]]
 
+        self.side = "right"
+
     def dist(self, P):
         return abs(self.A*P[0]+self.B*P[1]+self.C)/math.sqrt(self.A**2+self.B**2)
 
@@ -18,13 +20,64 @@ class Line:
         #1 - above/right
         #-1 - below/left
         #0 - at
-        #(reversed2 y coordinate!)
         if self.B != 0:
             f = (-self.A*P[0]-self.C)/self.B
             return np.sign(P[1]-f)
         else:
+            if abs(self.A) < 0.00001:
+                self.A = 0.00001
             f = -self.C/self.A
             return np.sign(P[0]-f)
+
+    def check_side(self, P):
+        if [P[0], P[1]] != [self.P1[0], self.P1[1]] and [P[0], P[1]] != [self.P2[0], self.P2[1]]:
+            val = self.compare(P)
+            if self.P1[0] != self.P2[0]:
+                if (self.P1[0]-self.P2[0])*val <= 0:
+                    return "left"
+                else:
+                    return "right"
+            else:
+                if (self.P1[1]-self.P2[1])*val >= 0:
+                    return "left"
+                else:
+                    return "right"
+
+    def approx_result(self, line):
+        if self.A*line.B-line.A*line.B == 0:
+            return
+        line1 = self
+        line2 = line
+        if self.B == 0:
+            line1, line2 = line2, line1
+        if line1.compare(line2.P1) == -line1.compare(line2.P2):
+            P1 = line2.P1
+            P2 = line2.P2
+            for i in range(30):
+                half_P = np.array([(P1[0]+P2[0])/2, (P1[1] + P2[1])/2])
+                if line1.compare(half_P) == -line1.compare(P1):
+                    P2 = half_P
+                else:
+                    P1 = half_P
+            return P1
+        return
+
+    def check_intersection(self, line):
+        res = self.approx_result(line)
+        if res is None:
+            return False
+        else:
+            line1 = self
+            line2 = line
+            if self.B == 0:
+                line1, line2 = line2, line1
+            if line1.P1[0] > line1.P2[0]:
+                if res[0] <= line1.P1[0] and res[0] >= line1.P2[0]:
+                    return True
+            else:
+                if res[0] >= line1.P1[0] and res[0] <= line1.P2[0]:
+                    return True
+            return False
 
     def collide_circle(self, c):
         d = self.dist(c.S)

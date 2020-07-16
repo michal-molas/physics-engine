@@ -7,6 +7,8 @@ from Rect_Wall import Rect_Wall
 from Triangle_Wall import Triangle_Wall
 from Polygon_Wall import Polygon_Wall
 
+from Line import Line
+
 class User:
     def __init__(self, sett):
         self.lm_pressed = False
@@ -73,9 +75,20 @@ class User:
                         m_pos = pygame.mouse.get_pos()
                         if m_pos[0] > sett.TB_WIDTH:
                             p = np.array([m_pos[0], m_pos[1]])
-                            self.poly_pts.append(p)
-                            if not self.poly_drawing:
-                                self.poly_drawing = True
+                            is_intersecting = False
+                            if len(self.poly_pts) > 2:
+                                line1 = Line(self.poly_pts[-1], p)
+                                line2 = Line(self.poly_pts[0], p)
+                                for i in range(len(self.poly_pts) - 1):
+                                    l = Line(self.poly_pts[i], self.poly_pts[i+1])
+                                    if l.check_intersection(line1):
+                                        is_intersecting = True
+                                    if l.check_intersection(line2):
+                                        is_intersecting = True
+                            if not is_intersecting:
+                                self.poly_pts.append(p)
+                                if not self.poly_drawing:
+                                    self.poly_drawing = True
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_RETURN:
                         if self.poly_drawing:

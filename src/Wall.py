@@ -40,6 +40,10 @@ class Wall:
         self.lines = []
         for i in range(len(pts)):
             self.lines.append(Line(self.pts[i], self.pts[(i+1)%len(self.pts)]))
+
+        self.sides = []
+        for i in range(len(self.lines)):
+            self.sides.append(self.lines[i].check_side(self.lines[i-1].P1))
         
     def update_pts(self):
         for i in range(len(self.pts)):
@@ -47,6 +51,7 @@ class Wall:
         self.rot_pts()
         for i in range(len(self.lines)):
             self.lines[i] = Line(self.pts[i], self.pts[(i+1)%len(self.pts)])
+            self.lines[i].side = self.sides[i]
         
     def rot_pts(self):
         rot_mat = [[math.cos(self.angle), -math.sin(self.angle)],[math.sin(self.angle), math.cos(self.angle)]]
@@ -60,7 +65,7 @@ class Wall:
     def collide_circle(self, c):
         for line in self.lines:
             line.collide_circle(c)
-
+    
     def detect_click(self, mouse_pos):
         for line in self.lines:
             comp = line.compare(mouse_pos)
@@ -72,6 +77,9 @@ class Wall:
                     return False
         return True
 
+    def update(self):
+        self.update_pts()
+    
     def draw(self, window, sett):
         pts_draw = [[int(x[0]), int(x[1])] for x in self.pts]
         pygame.draw.polygon(window, self.color, pts_draw)

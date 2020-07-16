@@ -23,7 +23,7 @@ def update(events):
         s.update(events, shapes, sett)
 
     for w in walls:
-        pass
+        w.update()
             
     user.update(events, window, shapes, walls, sett)
     col.perform_collisions(shapes, walls, sett)
