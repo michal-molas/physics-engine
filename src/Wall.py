@@ -41,17 +41,40 @@ class Wall:
         for i in range(len(pts)):
             self.lines.append(Line(self.pts[i], self.pts[(i+1)%len(self.pts)]))
 
-        self.sides = []
+        self.turnes = []
         for i in range(len(self.lines)):
-            self.sides.append(self.lines[i].check_side(self.lines[i-1].P1))
-        
+            self.turnes.append(self.lines[i].check_side(self.lines[i-1].P1))
+
+        self.convex_lines = []
+        self.triangles_cut = []
+
+        self.detect_hitbox()
+
+    def detect_hitbox(self):
+        self.triangles_cut = []
+        self.convex_lines = self.lines.copy()
+        found = True
+        while found:
+            found = False
+            for i in range(len(self.convex_lines)):
+                if self.convex_lines[i].turn == "left" and self.convex_lines[(i+1)%len(self.convex_lines)].turn == "right":
+                    found = True
+                    self.triangles_cut.append([self.convex_lines[i], self.convex_lines[(i+1)%len(self.convex_lines)], Line(self.convex_lines[(i+1)%len(self.convex_lines)].P2, self.convex_lines[i].P1)])
+                    if i == len(self.convex_lines)-1:
+                        self.convex_lines = self.convex_lines[1:i] + [Line(self.convex_lines[i].P1, self.convex_lines[(i+1)%len(self.convex_lines)].P2)]
+                    else:
+                        self.convex_lines = self.convex_lines[:i] + [Line(self.convex_lines[i].P1, self.convex_lines[(i+1)%len(self.convex_lines)].P2)] + self.convex_lines[(i+2):]
+                    break
+                
     def update_pts(self):
+        print("e")
         for i in range(len(self.pts)):
             self.pts[i] = self.rel_pts[i] + self.centroid
         self.rot_pts()
         for i in range(len(self.lines)):
             self.lines[i] = Line(self.pts[i], self.pts[(i+1)%len(self.pts)])
-            self.lines[i].side = self.sides[i]
+            self.lines[i].turn = self.turnes[i]
+        self.detect_hitbox()
         
     def rot_pts(self):
         rot_mat = [[math.cos(self.angle), -math.sin(self.angle)],[math.sin(self.angle), math.cos(self.angle)]]
@@ -65,16 +88,19 @@ class Wall:
     def collide_circle(self, c):
         for line in self.lines:
             line.collide_circle(c)
-    
+
     def detect_click(self, mouse_pos):
-        for line in self.lines:
-            comp = line.compare(mouse_pos)
-            if line.P1[0] != line.P2[0]:
-                if (line.P1[0]-line.P2[0]) * comp >= 0:
-                    return False
-            else:
-                if (line.P1[1]-line.P2[1]) * comp <= 0:
-                    return False
+        for t in self.triangles_cut:
+            cnt = 0
+            for line in t:
+                if line.check_side(mouse_pos) == "right":
+                    cnt += 1
+            if cnt == 3:
+                return False
+        
+        for line in self.convex_lines:
+            if line.check_side(mouse_pos) == "right":
+                return False
         return True
 
     def update(self):
@@ -83,6 +109,16 @@ class Wall:
     def draw(self, window, sett):
         pts_draw = [[int(x[0]), int(x[1])] for x in self.pts]
         pygame.draw.polygon(window, self.color, pts_draw)
+        '''
+        for line in self.convex_lines:
+            line.draw(window, sett.BLUE)
+        for t in self.triangles_cut:
+            for line in t:
+                line.draw(window, sett.GREEN)
+        '''
+        '''
         if self.selected:
             self.draw_collider(window, sett)
+
+        '''
         

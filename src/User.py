@@ -26,6 +26,9 @@ class User:
 
         self.angle = 0.0
 
+        ##########d
+        self.lines = []
+
     def draw_shape(self, events, window, sett):
         if self.sel_shape != "Mouse" and self.sel_shape != "Polygon_Wall":
             for event in events:
@@ -54,6 +57,7 @@ class User:
                                         return Rect_Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
                                     elif self.sel_shape == "Triangle_Wall":
                                         return Triangle_Wall(self.start_pos, self.end_pos, self.angle, self.sel_color, self.sel_shape)
+                                
             if self.lm_pressed:
                 if self.start_pos is not None:
                     if self.sel_shape == "Circle":
@@ -134,8 +138,8 @@ class User:
                 if w.selected:
                     m_pos = pygame.mouse.get_pos()
                     w.centroid = np.array([m_pos[0], m_pos[1]])
-                    w.update_pts()
                     self.rotate_wall(events, walls)
+                    w.update_pts()
         else:
             if self.holding:
                 for w in walls:
@@ -217,5 +221,10 @@ class User:
         poly = self.draw_polygon(events, window, sett)
         if poly is not None:
             walls.append(poly)
+            walls[-1].update_pts()
             self.poly_pts = []
+
+        #########d
+        for line in self.lines:
+            line.draw(window, sett.GREEN)
             
