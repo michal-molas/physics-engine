@@ -28,21 +28,7 @@ class Line:
                 self.A = 0.00001
             f = -self.C/self.A
             return np.sign(P[0]-f)
-    '''
-    def check_side2(self, P):
-        if [P[0], P[1]] != [self.P1[0], self.P1[1]] and [P[0], P[1]] != [self.P2[0], self.P2[1]]:
-            val = self.compare(P)
-            if self.P1[0] != self.P2[0]:
-                if (self.P1[0]-self.P2[0])*val <= 0:
-                    return "right"
-                else:
-                    return "left"
-            else:
-                if (self.P1[1]-self.P2[1])*val >= 0:
-                    return "right"
-                else:
-                    return "left"
-    '''
+
     def check_side(self, P):
         if [P[0], P[1]] != [self.P1[0], self.P1[1]] and [P[0], P[1]] != [self.P2[0], self.P2[1]]:
             val = self.compare(P)
@@ -109,7 +95,7 @@ class Line:
                     return
             
         if d <= c.r:
-            t = self.P2-self.P1
+            t = self.P1-self.P2
             ut = t/np.linalg.norm(t)
             un = np.array([-ut[1], ut[0]])
 

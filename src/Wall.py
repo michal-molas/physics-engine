@@ -67,7 +67,6 @@ class Wall:
                     break
                 
     def update_pts(self):
-        print("e")
         for i in range(len(self.pts)):
             self.pts[i] = self.rel_pts[i] + self.centroid
         self.rot_pts()

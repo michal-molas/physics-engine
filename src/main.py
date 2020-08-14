@@ -4,10 +4,6 @@ from User import User
 from Floor import Floor
 import Collisions as col
 
-#TODO 1: Ulepszyć system klikania tak, żeby nie było idiotycznych left/right tylko np in/out
-#TODO 2: Ustalić kierunek boków w wielokącie tak żeby było jak w prostokącie np
-#TODO 3: Ogólnie trzeba ten kod zrobić czytelny bo nie jest w chuj
-
 pygame.init()
 
 sett = Settings()
