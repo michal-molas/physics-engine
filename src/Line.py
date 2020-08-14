@@ -82,17 +82,16 @@ class Line:
     def collide_circle(self, c):
         d = self.dist(c.S)
         vec = self.P2-self.P1
-        perp_vec = np.array([vec[1], -vec[0]])
-        line1 = Line(self.P2, self.P2 + perp_vec)
-        line2 = Line(self.P1 + perp_vec, self.P1)
-        for line in [self, line1, line2]:
-            com_line = line.compare(c.S)
-            if line.P1[0] != line.P2[0]:
-                if (line.P1[0]-line.P2[0]) * com_line <= 0:
-                    return
-            else:
-                if (line.P1[1]-line.P2[1]) * com_line >= 0:
-                    return
+        perp_vec = np.array([-vec[1], vec[0]])
+        line1 = Line(self.P1, self.P1 + perp_vec)
+        line2 = Line(self.P2, self.P2 + perp_vec)
+
+        if self.check_side(c.S) == "left":
+            return
+        if line1.check_side(c.S) == "right":
+            return
+        if line2.check_side(c.S) == "left":
+            return
             
         if d <= c.r:
             t = self.P1-self.P2
@@ -114,7 +113,7 @@ class Line:
 
     def draw(self, window, col):
         pygame.draw.line(window, col, self.P1, self.P2, 2)
-        #######d
+        
         half_p = np.array([(self.P1[0] + self.P2[0])/2, (self.P1[1] + self.P2[1])/2])
         t = np.array([self.P2[0], self.P2[1]])-np.array([self.P1[0], self.P1[1]])
         if np.linalg.norm(t) < 1:
