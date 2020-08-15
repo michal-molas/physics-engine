@@ -55,15 +55,18 @@ class Wall:
         self.convex_lines = self.lines.copy()
         found = True
         while found:
+            print([x.turn for x in self.convex_lines])
             found = False
             for i in range(len(self.convex_lines)):
                 if self.convex_lines[i].turn == "left" and self.convex_lines[(i+1)%len(self.convex_lines)].turn == "right":
                     found = True
                     self.triangles_cut.append([self.convex_lines[i], self.convex_lines[(i+1)%len(self.convex_lines)], Line(self.convex_lines[(i+1)%len(self.convex_lines)].P2, self.convex_lines[i].P1)])
+                    new_line = Line(self.convex_lines[i].P1, self.convex_lines[(i+1)%len(self.convex_lines)].P2)
+                    new_line.turn = self.convex_lines[i-1].check_side(new_line.P2)
                     if i == len(self.convex_lines)-1:
-                        self.convex_lines = self.convex_lines[1:i] + [Line(self.convex_lines[i].P1, self.convex_lines[(i+1)%len(self.convex_lines)].P2)]
+                        self.convex_lines = self.convex_lines[1:i] + [new_line]
                     else:
-                        self.convex_lines = self.convex_lines[:i] + [Line(self.convex_lines[i].P1, self.convex_lines[(i+1)%len(self.convex_lines)].P2)] + self.convex_lines[(i+2):]
+                        self.convex_lines = self.convex_lines[:i] + [new_line] + self.convex_lines[(i+2):]
                     break
                 
     def update_pts(self):
@@ -108,16 +111,17 @@ class Wall:
     def draw(self, window, sett):
         pts_draw = [[int(x[0]), int(x[1])] for x in self.pts]
         pygame.draw.polygon(window, self.color, pts_draw)
-        '''
-        for line in self.convex_lines:
-            line.draw(window, sett.BLUE)
-        for t in self.triangles_cut:
-            for line in t:
-                line.draw(window, sett.GREEN)
-        '''
+
+
+        #Show colliders
+        if sett.show_colliders:
+            for line in self.convex_lines:
+                line.draw(window, sett.BLUE)
+            for t in self.triangles_cut:
+                for line in t:
+                    line.draw(window, sett.GREEN)
         '''
         if self.selected:
             self.draw_collider(window, sett)
-
         '''
         

@@ -29,6 +29,8 @@ class Settings:
 
         self.FPS = 60
 
+        self.show_colliders = False
+
         #input_box_G
         self.font = pygame.font.Font(None, 32)
         self.input_box = pygame.Rect(10, 100, self.TB_WIDTH - 20, 32)
