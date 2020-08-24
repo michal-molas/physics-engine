@@ -76,7 +76,7 @@ class User:
             elif len(self.poly_pts) > 1:
                 draw_pts = self.poly_pts.copy()
                 draw_pts.append(np.array([m_pos[0], m_pos[1]]))
-                Polygon_Wall(draw_pts, self.angle, self.sel_color, self.sel_shape).draw(window, sett)
+                Polygon_Wall(draw_pts, self.angle, self.sel_color, self.sel_shape, window).draw(window, sett)
         if self.sel_shape == "Polygon_Wall":
             for event in events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -103,7 +103,7 @@ class User:
                         if self.poly_drawing:
                             if len(self.poly_pts) > 2:
                                 self.poly_drawing = False
-                                return Polygon_Wall(self.poly_pts, self.angle, self.sel_color, self.sel_shape)
+                                return Polygon_Wall(self.poly_pts, self.angle, self.sel_color, self.sel_shape, window)
                     if event.key == pygame.K_ESCAPE:
                         self.poly_pts = []
                         self.poly_drawing = False

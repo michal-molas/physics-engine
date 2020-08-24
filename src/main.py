@@ -4,6 +4,9 @@ from User import User
 from Floor import Floor
 import Collisions as col
 
+#TODO1: jak robi się poligony i przeskakuje pole na drugą stronę to kierunek się nie zmienia i jest zły
+
+
 pygame.init()
 
 sett = Settings()

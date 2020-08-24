@@ -55,7 +55,6 @@ class Wall:
         self.convex_lines = self.lines.copy()
         found = True
         while found:
-            print([x.turn for x in self.convex_lines])
             found = False
             for i in range(len(self.convex_lines)):
                 if self.convex_lines[i].turn == "left" and self.convex_lines[(i+1)%len(self.convex_lines)].turn == "right":
